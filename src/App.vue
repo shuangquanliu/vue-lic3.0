@@ -1,28 +1,26 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Footer v-if="$route.meta.isShowFooter"/>
+    <router-view/>
   </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script type="text/ecmascript-6">
+import Footer from './components/Footer/Footer.vue'
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
+import {reqAddress,reqShops,reqCatorgorys} from './api/index'
+  export default {
+    /* async mounted(){
+      const result = await reqAddress('41.10049','119.36868')
+      console.log(result)
+    }, */
+    components:{
+      Footer
+    }
   }
-}
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus" rel="stylesheet/stylus" scoped>
+
+
 </style>
