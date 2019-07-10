@@ -13,10 +13,15 @@ import {reqAddress,reqShops,reqCatorgorys} from './api/index'
     /* async mounted(){
       const result = await reqAddress('41.10049','119.36868')
       console.log(result)
-    }, */
+    }, 
+    */
+   mounted(){
+      this.$store.dispatch('autoLogin')
+   },
     components:{
       Footer
     }
+    
   }
 </script>
 

@@ -3,6 +3,10 @@ import Msit  from '../pages/Msit/Msit.vue'
 import Order from '../pages/Order/Order.vue'
 import Profile from '../pages/Profile/Profile.vue'
 import Search from '../pages/Search/Search.vue'
+import Shop from '../pages/Shop/Shop.vue'
+import ShopGoods from '../pages/Shop/ShopGoods.vue'
+import ShopInfo from '../pages/Shop/ShopInfo.vue'
+import ShopRatings from '../pages/Shop/ShopRatings.vue'
 
 export default[
   {
@@ -28,6 +32,28 @@ export default[
     path:'/profile',
     component:Profile,
     meta: {isShowFooter:true}
+  },
+  {
+    path:'/shop',
+    component:Shop,
+    children:[
+      {
+        path:'/shop/goods',
+        component:ShopGoods
+      },
+      {
+        path:'/shop/ratings',
+        component:ShopRatings
+      },
+      {
+        path:'/shop/info',
+        component:ShopInfo
+      },
+      {
+        path:'/shop',
+        redirect:'/shop/goods'
+      }
+    ]
   },
   {
     path:'/',

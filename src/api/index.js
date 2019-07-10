@@ -46,7 +46,7 @@ export const reqMsmCode = (phone) => ajax({
 export const reqMsmLogin = (phone,code) => ajax({
   method:'POST',
   url:BASE+'/login_sms',
-  params:{
+  data:{
     phone,
     code
   }
@@ -55,10 +55,22 @@ export const reqMsmLogin = (phone,code) => ajax({
 //6.用户名登录
 export const reqPwdLogin = ({name,pwd,captcha}) => ajax({
   method:'POST',
-  url:BASE+'/login_sms',
-  params:{
+  url:BASE+'/login_pwd',
+  data:{
     name,
     pwd,
     captcha
   }
 })
+
+//7.自动登录
+export const reqAutoLogin = ()=> ajax({
+  url: BASE + '/auto_login',
+  headers: { needToken: true }
+ 
+})
+
+
+export const reqGoods = () => ajax('/goods')
+export const reqRatings = () => ajax('/ratings')
+export const reqInfo = () => ajax('/info')

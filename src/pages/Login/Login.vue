@@ -12,14 +12,15 @@
         <form>
           <div :class="{on:isShowMsg}">
             <section class="login_message">
-              <input type="text" maxlength="11" placeholder="手机号" v-model="phone" v-validate="{required: true,regex: /^1\d{10}$/}">
+              <input type="text" maxlength="11" placeholder="手机号" v-model="phone" name="phone" v-validate="{required: true,regex: /^1\d{10}$/}">
               <button :disabled="!isRightPhone || computeTime>0 " 
                 :class="isRightPhone?'get_verification right_phone_number':'get_verification'"
                 @click.prevent="sendCode" >
                 {{computeTime>0?`${computeTime}s获取验证码`:'获取验证码'}}</button>
+                 <span style="color: red;" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
             </section>
             <section class="login_verification">
-              <input type="text" maxlength="8" placeholder="验证码" v-model="code">
+              <input type="text" maxlength="8" placeholder="验证码" v-model="code" name="code">
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -29,17 +30,18 @@
           <div :class="{on:!isShowMsg}">
             <section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
+                <input type="text" maxlength="11" placeholder="手机/邮箱/用户名" name="name" v-model="name" v-validate="'required'">
+                <span v-show="errors.has('name')" style="color: red">{{ errors.first('name') }}</span>
               </section>
               <section class="login_verification">
-                <input :type="isShowPwd?'text':'password'" maxlength="8" placeholder="密码" v-model="pwd">
+                <input :type="isShowPwd?'text':'password'" maxlength="8" placeholder="密码" v-model="pwd" name="pwd">
                 <div class="switch_button" :class="isShowPwd?'on':'off'" @click="isShowPwd = !isShowPwd">
                   <div class="switch_circle" :class="{right:isShowPwd}"></div>
                   <span class="switch_text">{{isShowPwd?'abc':'...'}}</span>
                 </div>
               </section>
                <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha" name="captcha">
                 <img class="get_verification" src="http://localhost:5000/captcha" alt="captcha"
                  @click="updateCapcha" ref='captcha'> 
               </section>
@@ -109,7 +111,20 @@
       async login(){
         const { isShowMsg, phone, code, name, pwd, captcha } = this
         let result
-          if(isShowMsg){
+        let names
+        if(isShowMsg){
+          names = ['phone']
+        } else {
+          names = ['name']
+        }
+
+        //统一验证
+        // 进行统一的前台表单验证
+        const success = await this.$validator.validateAll(names)
+
+          if(success){
+
+            if(isShowMsg){
             result = await reqMsmLogin(phone,code)
             
           } else {
@@ -125,6 +140,7 @@
             this.$router.push('/profile')
           } else {
             alert(result.msg)
+          }
           }
       }
     },
